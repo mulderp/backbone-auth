@@ -23,6 +23,7 @@ define([
        el: '#login',
        events: {
          'click a.show-login': 'renderLogin',
+         'click a#hide': 'hideLogin',
          'submit': 'submit'
        },
        renderLogin: function(ev) {
@@ -30,6 +31,11 @@ define([
 
          var tmpl = _.template(LoginViewTemplate);
          this.$el.html(tmpl);
+       },
+       hideLogin: function(ev) {
+         ev.preventDefault();
+         console.log("hide");
+         this.$el.html('<a class="show-login" href="#">login</a>');
        },
        submit: function(ev) {
          ev.preventDefault();

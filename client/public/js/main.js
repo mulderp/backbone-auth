@@ -8,6 +8,7 @@ require.config({
 		text: '/js/libs/require/text'
 	},
 
+
 	shim: {
 		underscore: {
 			exports: '_'

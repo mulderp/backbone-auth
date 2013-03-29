@@ -1,0 +1,14 @@
+require 'faraday'
+require 'json'
+
+desc "list projects"
+task :list do
+  host = ENV['APIENV']
+  conn = Faraday::Connection.new("http://#{host}") do |builder|
+    builder.response :logger
+    builder.adapter Faraday.default_adapter
+  end
+  resp = conn.get 'projects'
+  raw_json = JSON.parse(resp.body)
+  puts JSON.pretty_generate(raw_json)
+end
