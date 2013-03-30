@@ -2,17 +2,18 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  ], function($, _, Backbone) {
+  'channel'
+  ], function($, _, Backbone, channel) {
 
     var User = Backbone.Model.extend({
       isSignedIn : function() {
         return !this.isNew();
       },
 
-      signIn: function(email, password, onFail, onSucceed) {
+      signIn: function(email, password, onSucceed, onFail) {
         console.log("sign in: " + email + ".. pswd:" + password);
         $.ajax({
-          url       : 'http://0.0.0.0:9393/api/auth/new',
+          url       : 'http://0.0.0.0:9292/api/auth/new',
           type      : 'POST',
           dataType  : 'json',
         data      : { email : email, password : password },
@@ -22,7 +23,17 @@ define([
       });
       return this;
     },
+    success: function(data) {
+      console.log(data);
+      this.username = data.username;
+      this.auth = true;
+      channel.trigger("user:authenticated", this);
+    },
+    parse: function(data) {
+      console.log(data);
+      console.log("****");
 
+    },
     signOut : function() {
       $.ajax({
         url       : 'http://0.0.0.0:9393/api/auth',
